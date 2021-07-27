@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DretNetAobScan", "DretNetAobScan\DretNetAobScan.csproj", "{2276E927-FDE1-4CB6-9B24-CCAA716BDD86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DretNetAobScan.Test", "DretNetAobScan.Test\DretNetAobScan.Test.csproj", "{B3750D02-6E87-4F3A-837D-FA6E563928E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2276E927-FDE1-4CB6-9B24-CCAA716BDD86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2276E927-FDE1-4CB6-9B24-CCAA716BDD86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2276E927-FDE1-4CB6-9B24-CCAA716BDD86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2276E927-FDE1-4CB6-9B24-CCAA716BDD86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3750D02-6E87-4F3A-837D-FA6E563928E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3750D02-6E87-4F3A-837D-FA6E563928E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3750D02-6E87-4F3A-837D-FA6E563928E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3750D02-6E87-4F3A-837D-FA6E563928E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84C19FC4-2046-4DB3-A7F6-97DC67075B87}
+	EndGlobalSection
+EndGlobal
