@@ -21,21 +21,21 @@ namespace DretNetAobScan
         public static extern bool NtWriteVirtualMemory(IntPtr ProcessHandle, IntPtr BaseAddress, byte[] Buffer, UInt32 NumberOfBytesToWrite, IntPtr NumberOfBytesWritten);
         #endregion
         #region Variables
-        string __process_name;
+        int __process_id;
         byte[] __pattern;
         byte[] __buffer;
 
         public List<IntPtr> __addresses = new List<IntPtr>();
         #endregion
 
-        public AobScan(string pName, byte[] pattern, byte[] buffer) {
-            this.__process_name = pName;
+        public AobScan(int id, byte[] pattern, byte[] buffer) {
+            this.__process_id = id;
             this.__pattern = pattern;
             this.__buffer = buffer;
         }
 
         public Process process() {
-            return Process.GetProcessesByName(__process_name).FirstOrDefault();
+            return Process.GetProcessById(__process_id);
         }
 
         public void __read_memory() {

@@ -7,17 +7,17 @@ namespace DretNetAobScan.Test {
     public class Program {
         [TestMethod]
         public void Main() {
-            Console.WriteLine("Insert the process name: ");
-            string process = Console.ReadLine();
-            Console.WriteLine("Insert the string you wanna search");
+            Console.WriteLine("Insert the process id: ");
+            int process = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Insert the string you wanna search: ");
             string strings = Console.ReadLine();
 
-            AobScan ascan = new AobScan(process, Encoding.ASCII.GetBytes(strings), null); // You can also use other Encoding methods.
+            AobScan ascan = new AobScan(process, Encoding.ASCII.GetBytes(strings), Encoding.ASCII.GetBytes("Hello!"));
 
-            // Read memory process
             ascan.__read_memory();
 
-            // Here it prints every addresses that the program took from the string
+            ascan.__write_memory();
+
             for (int i = 0; i < ascan.__addresses.Count; i++) {
                 Console.WriteLine(ascan.__addresses[i]);
             }
