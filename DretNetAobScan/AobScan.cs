@@ -59,11 +59,10 @@ namespace DretNetAobScan
             long i = 0; long j = 0; long l = 0;
             while (i != buffer.Length) {
                 if (buffer[i] == pattern[0]) {
-                    j = i;
-                    l = 0;
+                    j = i; l = 0;
                     while (buffer[j] == pattern[l]) {
                         j++; l++;
-                        if (j == buffer.Length || l == pattern.Length) return i;
+                        if (l == pattern.Length) return i;
                     }
                 }
                 i++;
