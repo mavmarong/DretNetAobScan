@@ -36,7 +36,7 @@ namespace DretNetAobScan
             return Process.GetProcessById(__process_id);
         }
 
-        public void __read_memory() {
+        public void read_memory() {
             byte[] __read_buffer = new byte[8192];
 
             for (long i = 0; i < 0x7FFFFF; i += 8192) {
@@ -48,7 +48,7 @@ namespace DretNetAobScan
             }
         }
 
-        public void __write_memory() {
+        public void write_memory() {
             for (int i = 0; i < __addresses.Count(); i++) {
                 uint __buffer_value = (uint)__buffer.Length;
                 NtWriteVirtualMemory(process().Handle, __addresses[i], __buffer, __buffer_value, IntPtr.Zero);
