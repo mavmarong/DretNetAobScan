@@ -44,8 +44,8 @@ namespace DretNetAobScan
             for (long address = 0; address < 0x7FFFFF; address += 8192) {
                 uint __buffer_value = (uint)__read_buffer.Length;
                 NtReadVirtualMemory(process().Handle, new IntPtr(address), __read_buffer, __buffer_value, IntPtr.Zero);
-                long offset = __pattern_scan(__read_buffer, __pattern);
-                if (offset != -1) {
+                __pattern_scan(__read_buffer, __pattern);
+                if (offsets.Count() > 0) {
                     for (int j = 0; j < offsets.Count(); j++) {
                         __addresses.Add(new IntPtr(address + offsets[j]));
                     }
@@ -63,7 +63,7 @@ namespace DretNetAobScan
             }
         }
 
-        private long __pattern_scan(byte[] buffer, byte[] pattern) {
+        private void __pattern_scan(byte[] buffer, byte[] pattern) {
             long i = 0; long j = 0; long l = 0;
             while (i != buffer.Length) {
                 if (buffer[i] == pattern[0]) {
@@ -75,8 +75,7 @@ namespace DretNetAobScan
                 }
                 i++;
                 Thread.Sleep(1);
-            } 
-            return -1;
+            }
         }
 
     }
