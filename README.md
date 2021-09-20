@@ -16,7 +16,7 @@ ascan.ReadMemory();
 ascan.WriteMemory();
 
 // You can see all the addresses that got found after the process got readed
-for (int i = 0; i < ascan.__addresses.Count; i++) {
-    Console.WriteLine(ascan.__addresses[i]);
+for (int i = 0; i < ascan.GetAddresses().Count; i++) {
+    Console.WriteLine(ascan.GetAddresses()[i]);
 }
 ```

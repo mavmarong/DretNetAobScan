@@ -14,12 +14,12 @@ namespace DretNetAobScan.Test {
 
             AobScan ascan = new AobScan(process, Encoding.ASCII.GetBytes(strings), Encoding.ASCII.GetBytes("Hello!"));
 
-            ascan.__read_memory();
+            ascan.ReadMemory();
 
-            ascan.__write_memory();
+            ascan.WriteMemory();
 
-            for (int i = 0; i < ascan.__addresses.Count; i++) {
-                Console.WriteLine(ascan.__addresses[i]);
+            for (int i = 0; i < ascan.GetAddresses().Count; i++) {
+                Console.WriteLine(ascan.GetAddresses()[i]);
             }
             Console.ReadLine();
         }

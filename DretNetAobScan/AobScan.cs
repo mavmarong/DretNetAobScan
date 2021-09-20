@@ -24,7 +24,7 @@ namespace DretNetAobScan
         byte[] __pattern;
         byte[] __buffer;
 
-        public List<IntPtr> __addresses = new List<IntPtr>();
+        private List<IntPtr> __addresses = new List<IntPtr>();
         private List<long> offsets = new List<long>();
         #endregion
 
@@ -78,5 +78,8 @@ namespace DretNetAobScan
             }
         }
 
+        public List<IntPtr> GetAddresses() {
+            return __addresses;
+        }
     }
 }
