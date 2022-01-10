@@ -23,15 +23,19 @@ namespace DretNetAobScan
         int __process_id;
         byte[] __pattern;
         byte[] __buffer;
+        long __read_buffer_size;
+        long __memory_limit_size;
 
         private List<IntPtr> __addresses = new List<IntPtr>();
         private List<long> offsets = new List<long>();
         #endregion
 
-        public AobScan(int id, byte[] pattern, byte[] buffer) {
-            this.__process_id = id;
-            this.__pattern = pattern;
-            this.__buffer = buffer;
+        public AobScan(int id, byte[] pattern, byte[] buffer, long read_buffer_size, long memory_limit_size) {
+            __process_id = id;
+            __pattern = pattern;
+            __buffer = buffer;
+            __read_buffer_size = read_buffer_size;
+            __memory_limit_size = memory_limit_size;
         }
 
         public Process process() {
@@ -39,9 +43,9 @@ namespace DretNetAobScan
         }
 
         public void ReadMemory() {
-            byte[] __read_buffer = new byte[8192];
+            byte[] __read_buffer = new byte[__read_buffer_size];
 
-            for (long address = 0; address < 0x7FFFFF; address += 8192) {
+            for (long address = 0; address < __memory_limit_size; address += __read_buffer_size) {
                 uint __buffer_value = (uint)__read_buffer.Length;
                 NtReadVirtualMemory(process().Handle, new IntPtr(address), __read_buffer, __buffer_value, IntPtr.Zero);
                 __pattern_scan(__read_buffer, __pattern);
@@ -64,8 +68,8 @@ namespace DretNetAobScan
         }
 
         private void __pattern_scan(byte[] buffer, byte[] pattern) {
-            long i = 0; long j = 0; long l = 0;
-            while (i != buffer.Length) {
+            long j = 0; long l = 0;
+            for (long i = 0; i != buffer.Length; i++) {
                 if (buffer[i] == pattern[0]) {
                     j = i; l = 0;
                     while (buffer[j] == pattern[l]) {
@@ -73,7 +77,6 @@ namespace DretNetAobScan
                         if (l == pattern.Length) offsets.Add(i);
                     }
                 }
-                i++;
                 Thread.Sleep(1);
             }
         }
