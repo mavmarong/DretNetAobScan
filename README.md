@@ -7,7 +7,7 @@ This is a simple and clean Array Of Bytes Memory Scan helpful to make Memory hac
 ## Examples:
 ```csharp
 // Initialize the library
-AobScan ascan = new AobScan(5204, Encoding.ASCII.GetBytes("C:\Users\mavmarong"), Encoding.ASCII.GetBytes("Hello!"));
+AobScan ascan = new AobScan(5204, Encoding.ASCII.GetBytes("C:\Users\mavmarong"), Encoding.ASCII.GetBytes("Hello!"), 8192, 0x7FFFFF);
 
 // With this you can easly find the addresses of the string "C:\Users\mavmarong" in the memory of the indicated process id.
 ascan.ReadMemory();

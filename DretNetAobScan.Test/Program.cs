@@ -12,7 +12,7 @@ namespace DretNetAobScan.Test {
             Console.WriteLine("Insert the string you wanna search: ");
             string strings = Console.ReadLine();
 
-            AobScan ascan = new AobScan(process, Encoding.ASCII.GetBytes(strings), Encoding.ASCII.GetBytes("Hello!"));
+            AobScan ascan = new AobScan(process, Encoding.ASCII.GetBytes(strings), Encoding.ASCII.GetBytes("Hello!"), 8192, 0x7FFFFF);
 
             ascan.ReadMemory();
 
