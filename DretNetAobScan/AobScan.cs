@@ -7,82 +7,35 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DretNetAobScan
-{
-    public class AobScan
-    {
-        #region Pinvokes
-        [DllImport("ntdll.dll", SetLastError = true)]
-        public static extern bool NtReadVirtualMemory(IntPtr ProcessHandle, IntPtr BaseAddress, [Out] byte[] Buffer, UInt32 NumberOfBytesToRead, IntPtr NumberOfBytesRead);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr OpenProcess(Int32 processAccess, bool bInheritHandle, int processId);
-        [DllImport("ntdll.dll", SetLastError = true)]
-        public static extern bool NtWriteVirtualMemory(IntPtr ProcessHandle, IntPtr BaseAddress, byte[] Buffer, UInt32 NumberOfBytesToWrite, IntPtr NumberOfBytesWritten);
-        #endregion
-        #region Variables
-        int __process_id;
-        byte[] __pattern;
-        byte[] __buffer;
-        long __read_buffer_size;
-        long __memory_limit_size;
-
-        private List<IntPtr> __addresses = new List<IntPtr>();
-        private List<long> offsets = new List<long>();
-        #endregion
-
-        public AobScan(int id, byte[] pattern, byte[] buffer, long read_buffer_size, long memory_limit_size) {
+namespace DretNetAobScan {
+    public class AobScan : Helper {
+        public AobScan(int id, byte[] pattern, byte[] buffer) {
             __process_id = id;
             __pattern = pattern;
             __buffer = buffer;
-            __read_buffer_size = read_buffer_size;
-            __memory_limit_size = memory_limit_size;
-        }
-
-        public Process process() {
-            return Process.GetProcessById(__process_id);
         }
 
         public void ReadMemory() {
-            byte[] __read_buffer = new byte[__read_buffer_size];
-
-            for (long address = 0; address < __memory_limit_size; address += __read_buffer_size) {
-                uint __buffer_value = (uint)__read_buffer.Length;
-                NtReadVirtualMemory(process().Handle, new IntPtr(address), __read_buffer, __buffer_value, IntPtr.Zero);
-                __pattern_scan(__read_buffer, __pattern);
-                if (offsets.Count() > 0) {
-                    for (int j = 0; j < offsets.Count(); j++) {
-                        __addresses.Add(new IntPtr(address + offsets[j]));
+            for (long i = 0x0; i < 0xFFFFFFFF;) {
+                MEMORY_BASIC_INFORMATION mem_info = new MEMORY_BASIC_INFORMATION();
+                if (VirtualQueryEx(GetProcess().Handle, new IntPtr(i), out mem_info, (uint)Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION))) == 0) break;
+                if ((mem_info.State & (uint)MEM_COMMIT) != 0 && (mem_info.Protect & (uint)PAGE_GUARD) != PAGE_GUARD) {
+                    byte[] __read_buffer = new byte[mem_info.RegionSize];
+                    uint __buffer_value = 0;
+                    if (ReadProcessMemory(GetProcess().Handle, new IntPtr(mem_info.BaseAddress), __read_buffer, (uint)__read_buffer.Length, out __buffer_value) && __buffer_value > 0) {
+                        int offset = __pattern_scan(__read_buffer, __pattern);
+                        if (offset != -1) __addresses.Add(new IntPtr(mem_info.BaseAddress + offset));
                     }
-                    offsets.Clear();
                 }
-                Thread.Sleep(1);
+                i = mem_info.BaseAddress + mem_info.RegionSize;
             }
         }
 
         public void WriteMemory() {
             for (int i = 0; i < __addresses.Count(); i++) {
-                uint __buffer_value = (uint)__buffer.Length;
-                NtWriteVirtualMemory(process().Handle, __addresses[i], __buffer, __buffer_value, IntPtr.Zero);
-                Thread.Sleep(1);
+                uint __buffer_value = 0;
+                WriteProcessMemory(GetProcess().Handle, __addresses[i], __buffer, (uint)__buffer.Length, __buffer_value);
             }
-        }
-
-        private void __pattern_scan(byte[] buffer, byte[] pattern) {
-            long j = 0; long l = 0;
-            for (long i = 0; i != buffer.Length; i++) {
-                if (buffer[i] == pattern[0]) {
-                    j = i; l = 0;
-                    while (buffer[j] == pattern[l]) {
-                        j++; l++;
-                        if (l == pattern.Length) offsets.Add(i);
-                    }
-                }
-                Thread.Sleep(1);
-            }
-        }
-
-        public List<IntPtr> GetAddresses() {
-            return __addresses;
         }
     }
 }
