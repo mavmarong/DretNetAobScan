@@ -27,7 +27,6 @@ namespace DretNetAobScan {
         public const int PAGE_GUARD = 0x00000100;
 
         public List<IntPtr> __addresses = new List<IntPtr>();
-        public List<MEMORY_BASIC_INFORMATION> mapped_memory = new List<MEMORY_BASIC_INFORMATION>();
         #endregion
         public Process GetProcess() => Process.GetProcessById(__process_id);
         public static int GetProcessID(string ProcessName) => Process.GetProcessesByName(ProcessName).FirstOrDefault().Id;
