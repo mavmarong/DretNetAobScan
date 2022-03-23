@@ -47,12 +47,9 @@ namespace DretNetAobScan {
             for (int i = 0; i != buffer.Length; i++) {
                 if (buffer[i] == pattern[0]) {
                     j = i;
-                    for (l = 0; buffer[j] == pattern[l]; l++) {
-                        if (l == pattern.Length - 1) 
-                            return i;
-                        if (j > buffer[buffer.Length - 1]) 
-                            break;
-                        j++;
+                    for (l = 0; j < buffer.Length; l++, j++) {
+                        if (buffer[j] != pattern[l]) break;
+                        if (l == pattern.Length - 1) return i;
                     }
                 }
             }
