@@ -31,7 +31,7 @@ namespace DretNetAobScan {
         #endregion
 
         public Process GetProcess( ) => Process.GetProcessById( _process_id );
-        public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault().Id;
+        public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
         public List<IntPtr> GetAddresses( ) => _addresses;
 
         public struct MEMORY_BASIC_INFORMATION {
