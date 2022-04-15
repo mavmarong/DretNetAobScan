@@ -47,8 +47,7 @@ namespace DretNetAobScan {
         public static int _pattern_scan( byte[ ] buffer , byte[ ] pattern ) {
             for ( int i = 0 ; i != buffer.Length ; i++ ) {
                 if ( buffer[ i ] == pattern[ 0 ] ) {
-                    int j = i;
-                    for ( int l = 0 ; j < buffer.Length ; l++, j++ ) {
+                    for ( int l = 0, j = i ; j < buffer.Length ; l++, j++ ) {
                         if ( buffer[ j ] != pattern[ l ] ) break;
                         if ( l == pattern.Length - 1 ) return i;
                     }
