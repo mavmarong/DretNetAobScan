@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace DretNetAobScan {
     public class AobScan : Helper {
-        public AobScan( int id , byte[ ] pattern , byte[ ] buffer ) {
+        public AobScan( int id , string pattern , string buffer ) {
             _process_id = id;
-            _pattern = pattern;
-            _buffer = buffer;
+            _pattern = _string_to_aob( pattern );
+            _buffer = _string_to_aob( buffer );
         }
 
         public void ReadMemory( ) {

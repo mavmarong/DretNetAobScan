@@ -55,5 +55,15 @@ namespace DretNetAobScan {
             }
             return -1;
         }
+
+        public static byte[ ] _string_to_aob( string AOB ) {
+            string[] _string_aob = AOB.Split(' ');
+            byte[] _byte_aob = new byte[_string_aob.Length];
+            for ( int i = 0 ; i < _byte_aob.Length ; i++ ) {
+                if ( _string_aob.Contains( "?" ) ) _byte_aob[ i ] = 0x0;
+                else _byte_aob[ i ] = Convert.ToByte( _string_aob[ i ] , 16 );
+            }
+            return _byte_aob;
+        }
     }
 }
