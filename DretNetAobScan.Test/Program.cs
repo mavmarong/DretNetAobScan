@@ -12,10 +12,15 @@ namespace DretNetAobScan.Test {
             Console.WriteLine( "Insert the string you wanna search: " );
             string strings = Console.ReadLine();
 
-            AobScan ascan = new AobScan( AobScan.GetProcessID( process ) , BitConverter.ToString(Encoding.ASCII.GetBytes( strings )).Replace('-', ' ') , BitConverter.ToString(Encoding.ASCII.GetBytes( "Hello!" )).Replace('-', ' ') );
+            AobScan ascan = new AobScan( AobScan.GetProcessID( process ) );
+            
+            byte[ ] pattern = Encoding.ASCII.GetBytes( strings );
+            byte[ ] buffer = Encoding.ASCII.GetBytes( "Hello!" );
 
-            ascan.ReadMemory( );
-            ascan.WriteMemory( );
+            ascan.ReadMemory( BitConverter.ToString( pattern ).Replace( '-' , ' ' ) );
+            
+            // I recommend you to put the pattern length if you want to replace the whole string.
+            ascan.WriteMemory( BitConverter.ToString( buffer ).Replace( '-' , ' ' ) , (uint) pattern.Length );
 
             for ( int i = 0 ; i < ascan.GetAddresses( ).Count ; i++ )
                 Console.WriteLine( ascan.GetAddresses( )[ i ] );

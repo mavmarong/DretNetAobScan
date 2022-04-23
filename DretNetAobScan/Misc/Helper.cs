@@ -21,18 +21,12 @@ namespace DretNetAobScan {
 
         #region Variables
         public int _process_id;
-        public byte[ ] _pattern;
-        public byte[ ] _buffer;
 
         public const int MEM_COMMIT = 0x00001000;
         public const int PAGE_GUARD = 0x00000100;
 
         public List<IntPtr> _addresses = new List<IntPtr>();
         #endregion
-
-        public Process GetProcess( ) => Process.GetProcessById( _process_id );
-        public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
-        public List<IntPtr> GetAddresses( ) => _addresses;
 
         public struct MEMORY_BASIC_INFORMATION {
             public int BaseAddress;
@@ -57,13 +51,17 @@ namespace DretNetAobScan {
         }
 
         public static byte[ ] _string_to_aob( string AOB ) {
-            string[] _string_aob = AOB.Split(' ');
-            byte[] _byte_aob = new byte[_string_aob.Length];
+            string[ ] _string_aob = AOB.Split( ' ' );
+            byte[ ] _byte_aob = new byte[ _string_aob.Length ];
             for ( int i = 0 ; i < _byte_aob.Length ; i++ ) {
                 if ( _string_aob.Contains( "?" ) ) _byte_aob[ i ] = 0x0;
                 else _byte_aob[ i ] = Convert.ToByte( _string_aob[ i ] , 16 );
             }
             return _byte_aob;
         }
+
+        public Process GetProcess( ) => Process.GetProcessById( _process_id );
+        public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
+        public List<IntPtr> GetAddresses( ) => _addresses;
     }
 }
