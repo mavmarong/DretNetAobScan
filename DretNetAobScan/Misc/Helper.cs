@@ -49,17 +49,22 @@ namespace DretNetAobScan {
             }
             return -1;
         }
-
-        public static byte[ ] _string_to_aob( string AOB ) {
-            string[ ] _string_aob = AOB.Split( ' ' );
-            byte[ ] _byte_aob = new byte[ _string_aob.Length ];
-            for ( int i = 0 ; i < _byte_aob.Length ; i++ ) {
-                if ( _string_aob.Contains( "?" ) ) _byte_aob[ i ] = 0x0;
-                else _byte_aob[ i ] = Convert.ToByte( _string_aob[ i ] , 16 );
+        
+        public static byte[ ] GetBytes( object type ) {
+            switch ( type.GetType( ).ToString( ) ) {
+                case "System.String":
+                    return Encoding.UTF8.GetBytes( type.ToString( ) );
+                case "System.Double":
+                    return BitConverter.GetBytes( Convert.ToDouble( type ) );
+                case "System.Int32":
+                    return BitConverter.GetBytes( Convert.ToInt32( type ) );
+                case "System.Single":
+                    return BitConverter.GetBytes( Convert.ToSingle( type ) );
+                case "System.Int64":
+                    return BitConverter.GetBytes( Convert.ToInt64( type ) );
             }
-            return _byte_aob;
+            return ( byte[ ] ) type; // it will give error if the type is not byte[].
         }
-
         public Process GetProcess( ) => Process.GetProcessById( _process_id );
         public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
         public List<IntPtr> GetAddresses( ) => _addresses;

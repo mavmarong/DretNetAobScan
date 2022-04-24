@@ -11,16 +11,13 @@ namespace DretNetAobScan.Test {
             string process = Console.ReadLine();
             Console.WriteLine( "Insert the string you wanna search: " );
             string strings = Console.ReadLine();
-
-            AobScan ascan = new AobScan( AobScan.GetProcessID( process ) );
             
-            byte[ ] pattern = Encoding.ASCII.GetBytes( strings );
-            byte[ ] buffer = Encoding.ASCII.GetBytes( "Hello!" );
+            AobScan ascan = new AobScan( AobScan.GetProcessID( process ) );
 
-            ascan.ReadMemory( BitConverter.ToString( pattern ).Replace( '-' , ' ' ) );
+            ascan.ReadMemory( strings );
             
             // I recommend you to put the pattern length if you want to replace the whole string.
-            ascan.WriteMemory( BitConverter.ToString( buffer ).Replace( '-' , ' ' ) , (uint) pattern.Length );
+            ascan.WriteMemory( "Hello!" , ( uint ) AobScan.GetBytes(strings).Length );
 
             for ( int i = 0 ; i < ascan.GetAddresses( ).Count ; i++ )
                 Console.WriteLine( ascan.GetAddresses( )[ i ] );
