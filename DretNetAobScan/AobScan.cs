@@ -32,7 +32,7 @@ namespace DretNetAobScan {
 
         public void WriteMemory( object buffer, uint buffer_length ) {
             byte[ ] _buffer = GetBytes( buffer );
-            for ( int i = 0 ; i < _addresses.Count( ) ; i++ ) {
+            for ( int i = 0 ; i < _addresses.Count( ) ; ++i ) {
                 uint _buffer_value = 0;
                 WriteProcessMemory( GetProcess( ).Handle , _addresses[ i ] , _buffer , buffer_length , _buffer_value );
             }
