@@ -26,7 +26,6 @@ namespace DretNetAobScan {
                         if ( offset != -1 ) _addresses.Add( new IntPtr( mem_info.BaseAddress + offset ) );
                     }
                 }
-                
                 i = mem_info.BaseAddress + mem_info.RegionSize;
             }
         }
