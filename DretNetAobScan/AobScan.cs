@@ -26,15 +26,16 @@ namespace DretNetAobScan {
                         if ( offset != -1 ) _addresses.Add( new IntPtr( mem_info.BaseAddress + offset ) );
                     }
                 }
+                
                 i = mem_info.BaseAddress + mem_info.RegionSize;
             }
         }
 
-        public void WriteMemory( object buffer, uint buffer_length ) {
+        public void WriteMemory( object buffer, uint buffer_length = 0 ) {
             byte[ ] _buffer = GetBytes( buffer );
             for ( int i = 0 ; i < _addresses.Count( ) ; ++i ) {
                 uint _buffer_value = 0;
-                WriteProcessMemory( GetProcess( ).Handle , _addresses[ i ] , _buffer , buffer_length , _buffer_value );
+                WriteProcessMemory( GetProcess( ).Handle , _addresses[ i ] , _buffer , buffer_length == 0 ? (uint)_buffer.Length : buffer_length , _buffer_value );
             }
         }
     }

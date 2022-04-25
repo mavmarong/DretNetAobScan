@@ -17,6 +17,9 @@ namespace DretNetAobScan {
         public static extern bool WriteProcessMemory( IntPtr hProcess , IntPtr lpBaseAddress , byte[ ] buffer , uint size , uint lpNumberOfBytesWritten );
         [DllImport( "kernel32.dll" , SetLastError = true )]
         public static extern int VirtualQueryEx( IntPtr hProcess , IntPtr lpAddress , out MEMORY_BASIC_INFORMATION lpBuffer , uint dwLength );
+        [DllImport( "kernel32.dll" , SetLastError = true , CallingConvention = CallingConvention.Winapi )]
+        [return: MarshalAs( UnmanagedType.Bool )]
+        internal static extern bool IsWow64Process( [In] IntPtr process , [Out] out bool wow64Process );
         #endregion
 
         #region Variables
