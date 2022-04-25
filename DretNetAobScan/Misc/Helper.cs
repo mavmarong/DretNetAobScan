@@ -11,7 +11,7 @@ namespace DretNetAobScan {
     public class Helper {
         #region Pinvokes
         [DllImport( "kernel32.dll" )]
-        public static extern bool ReadProcessMemory( IntPtr hProcess , IntPtr lpBaseAddress , byte[ ] buffer , uint size , out uint lpNumberOfBytesRead );
+        public static extern bool ReadProcessMemory( IntPtr hProcess , IntPtr lpBaseAddress , [Out] byte[ ] buffer , uint size , out uint lpNumberOfBytesRead );
         [DllImport( "kernel32.dll" )]
         public static extern bool WriteProcessMemory( IntPtr hProcess , IntPtr lpBaseAddress , byte[ ] buffer , uint size , uint lpNumberOfBytesWritten );
         [DllImport( "kernel32.dll" , SetLastError = true )]
