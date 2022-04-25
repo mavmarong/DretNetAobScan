@@ -18,7 +18,9 @@ byte[] buffer = Encoding.ASCII.GetBytes("Hello!");
 ascan.ReadMemory(pattern);
 
 // Automatically replace all the string containing "C:\Users\mavmarong" with "Hello!"
-ascan.WriteMemory(buffer, (uint) buffer.Length);
+ascan.WriteMemory(buffer);
+// or
+ascan.WriteMemory(buffer, (uint) pattern.Length);
 //^^ if you want to replace the whole string "C:\Users\mavmarong" put the pattern length in the second parameter of the WriteMemory function
 ```
 Example 2:
@@ -28,7 +30,9 @@ string buffer = "Hello!";
 
 ascan.ReadMemory(pattern);
 
-ascan.WriteMemory(buffer, (uint) AobScan.GetBytes(buffer).Length);
+ascan.WriteMemory(buffer;
+// or
+ascan.WriteMemory(buffer, (uint) AobScan.GetBytes(pattern).Length);
 ```
 
 ```csharp
