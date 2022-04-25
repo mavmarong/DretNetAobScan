@@ -12,8 +12,8 @@ namespace DretNetAobScan {
         public AobScan( int pid ) {
             _process_id = pid;
         }
-        
-        public void ReadMemory( object pattern) {
+
+        public void ReadMemory( object pattern ) {
             byte[ ] _pattern = GetBytes( pattern );
             for ( long i = 0x0 ; i < 0xFFFFFFFF ; ) {
                 MEMORY_BASIC_INFORMATION mem_info = new MEMORY_BASIC_INFORMATION();
@@ -30,11 +30,11 @@ namespace DretNetAobScan {
             }
         }
 
-        public void WriteMemory( object buffer, uint buffer_length = 0 ) {
+        public void WriteMemory( object buffer , uint buffer_length = 0 ) {
             byte[ ] _buffer = GetBytes( buffer );
             for ( int i = 0 ; i < _addresses.Count( ) ; ++i ) {
                 uint _buffer_value = 0;
-                WriteProcessMemory( GetProcessHandle( ) , _addresses[ i ] , _buffer , buffer_length == 0 ? (uint)_buffer.Length : buffer_length , _buffer_value );
+                WriteProcessMemory( GetProcessHandle( ) , _addresses[ i ] , _buffer , buffer_length == 0 ? ( uint ) _buffer.Length : buffer_length , _buffer_value );
             }
         }
     }
