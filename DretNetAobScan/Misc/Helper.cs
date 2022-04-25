@@ -12,14 +12,12 @@ namespace DretNetAobScan {
         #region Pinvokes
         [DllImport( "kernel32.dll" )]
         public static extern bool ReadProcessMemory( IntPtr hProcess , IntPtr lpBaseAddress , byte[ ] buffer , uint size , out uint lpNumberOfBytesRead );
-
         [DllImport( "kernel32.dll" )]
         public static extern bool WriteProcessMemory( IntPtr hProcess , IntPtr lpBaseAddress , byte[ ] buffer , uint size , uint lpNumberOfBytesWritten );
         [DllImport( "kernel32.dll" , SetLastError = true )]
         public static extern int VirtualQueryEx( IntPtr hProcess , IntPtr lpAddress , out MEMORY_BASIC_INFORMATION lpBuffer , uint dwLength );
-        [DllImport( "kernel32.dll" , SetLastError = true , CallingConvention = CallingConvention.Winapi )]
-        [return: MarshalAs( UnmanagedType.Bool )]
-        internal static extern bool IsWow64Process( [In] IntPtr process , [Out] out bool wow64Process );
+        [DllImport( "kernel32.dll" , SetLastError = true )]
+        public static extern IntPtr OpenProcess( uint processAccess , bool bInheritHandle , uint processId );        
         #endregion
 
         #region Variables
@@ -27,6 +25,8 @@ namespace DretNetAobScan {
 
         public const int MEM_COMMIT = 0x00001000;
         public const int PAGE_GUARD = 0x00000100;
+
+        public const uint PROCESS_ALL_ACCESS = 0x001F0FFF;
 
         public List<IntPtr> _addresses = new List<IntPtr>();
         #endregion
@@ -68,7 +68,7 @@ namespace DretNetAobScan {
             }
             return ( byte[ ] ) type; // it will give error if the type is not byte[].
         }
-        public Process GetProcess( ) => Process.GetProcessById( _process_id );
+        public IntPtr GetProcessHandle( ) => OpenProcess( PROCESS_ALL_ACCESS , false , (uint) _process_id );
         public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
         public List<IntPtr> GetAddresses( ) => _addresses;
     }
