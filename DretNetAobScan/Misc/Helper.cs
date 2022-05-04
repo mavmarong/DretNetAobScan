@@ -15,7 +15,7 @@ namespace DretNetAobScan {
         [DllImport( "kernel32.dll" , SetLastError = true )]
         public static extern int VirtualQueryEx( IntPtr hProcess , IntPtr lpAddress , out MEMORY_BASIC_INFORMATION lpBuffer , uint dwLength );
         [DllImport( "kernel32.dll" , SetLastError = true )]
-        public static extern IntPtr OpenProcess( uint processAccess , bool bInheritHandle , uint processId );        
+        public static extern IntPtr OpenProcess( uint processAccess , bool bInheritHandle , uint processId );
         #endregion
 
         #region Variables
@@ -50,7 +50,7 @@ namespace DretNetAobScan {
             }
             return -1;
         }
-        
+
         public static byte[ ] GetBytes( object type ) {
             switch ( type.GetType( ).ToString( ) ) {
                 case "System.String":
@@ -66,7 +66,7 @@ namespace DretNetAobScan {
             }
             return ( byte[ ] ) type; // it will give error if the type is not byte[].
         }
-        public IntPtr GetProcessHandle( ) => OpenProcess( PROCESS_ALL_ACCESS , false , (uint) _process_id );
+        public IntPtr GetProcessHandle( ) => OpenProcess( PROCESS_ALL_ACCESS , false , ( uint ) _process_id );
         public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
         public List<IntPtr> GetAddresses( ) => _addresses;
     }
