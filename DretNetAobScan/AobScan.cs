@@ -9,7 +9,7 @@ namespace DretNetAobScan {
             _process_id = pid;
         }
 
-        public byte[ ] SendResults( object pattern , long results_size = 0xF0,  long start_address = 0x0 , long end_address = 0xFFFFFFFF ) { //TODO: Fix the offset calculation.
+        public byte[ ] SendResults( object pattern , long results_size = 0xF0 ,  long start_address = 0x0 , long end_address = 0xFFFFFFFF ) { //TODO: Fix the offset calculation.
             byte[ ] _pattern = GetBytes( pattern );
             for ( long i = start_address ; i < end_address ; ) {
                 MEMORY_BASIC_INFORMATION mem_info = new MEMORY_BASIC_INFORMATION();
