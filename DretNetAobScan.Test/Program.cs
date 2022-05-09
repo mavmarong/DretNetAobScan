@@ -20,7 +20,7 @@ namespace DretNetAobScan.Test {
             ascan.WriteMemory( "Hello!" , ( uint ) AobScan.GetBytes(strings).Length );
 
             for ( int i = 0 ; i < ascan.GetAddresses( ).Count ; i++ )
-                Console.WriteLine( ascan.GetAddresses( )[ i ] );
+                Console.WriteLine( $"0x{ascan.GetAddresses( )[ i ].ToString( "X" )}" );
 
             Console.ReadLine( );
         }
