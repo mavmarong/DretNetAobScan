@@ -46,24 +46,24 @@ namespace DretNetAobScan {
         #region Public Functions
         public static int _calc_offset( byte[ ] buffer , byte[ ] pattern ) {
             for ( int i = 0 ; i != buffer.Length ; ++i ) 
-                for ( int l = 0, k = i ; buffer[ k ] == pattern[ l ] && k < buffer.Length ; ++l, ++k ) 
-                    if ( l == pattern.Length - 1 ) 
+                for ( int j = 0, k = i ; buffer[ k ] == pattern[ j ] && k < buffer.Length ; ++j, ++k ) 
+                    if ( j == pattern.Length - 1 ) 
                         return i;
             return -1;
         }
         
         public static int _calc_offset_send_result( byte[ ] buffer , byte[ ] pattern , long results_size ,  out byte[ ] results ) {
             results = new byte[ results_size ];
-            for ( int i = 0, l = 0 ; i != buffer.Length && l != 30 ; ++i ) {
-                for ( int k = 0, x = 0, j = i ; j < buffer.Length && k < results_size; ++k, ++j ) {
-                    if ( x < pattern.Length ) 
-                        if ( buffer[ j ] != pattern[ x ] )
+            for ( int i = 0, j = 0 ; i != buffer.Length && j != 30 ; ++i ) {
+                for ( int k = 0, l = 0, n = i ; j < buffer.Length && k < results_size; ++k, ++n ) {
+                    if ( l < pattern.Length ) 
+                        if ( buffer[ j ] != pattern[ l ] )
                             break;
-                    l = buffer[ k ] == 0x00 ? ++l : 0;
-                    results[ k ] = buffer[ j ];
-                    x = x >= pattern.Length ? ++x : x;
+                    j = buffer[ n ] == 0x00 ? ++j : 0;
+                    results[ k ] = buffer[ n ];
+                    l = l >= pattern.Length ? ++l : l;
                 }
-                for ( int k = 0, j = i ; buffer[ j ] == pattern[ k ] && j < buffer.Length ; ++k, ++j ) 
+                for ( int k = 0, l = i ; buffer[ l ] == pattern[ k ] && k < buffer.Length ; ++k, ++l ) 
                     if ( k == pattern.Length - 1 ) 
                         return i;
             }
