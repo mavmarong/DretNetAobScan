@@ -19,16 +19,16 @@ namespace DretNetAobScan {
         #endregion
 
         #region Variables
-        public int _process_id;
+        public int m_ProcessID;
 
-        public byte[] results;
+        public byte[] m_Results;
 
         public const int MEM_COMMIT = 0x00001000;
         public const int PAGE_GUARD = 0x00000100;
 
         public const uint PROCESS_ALL_ACCESS = 0x001F0FFF;
 
-        public List<IntPtr> _addresses = new List<IntPtr>();
+        public List<IntPtr> m_Addresses = new List<IntPtr>();
         #endregion
 
         #region Structs
@@ -44,27 +44,27 @@ namespace DretNetAobScan {
         #endregion
 
         #region Public Functions
-        public static int _calc_offset( byte[ ] buffer , byte[ ] pattern ) {
-            for ( int i = 0 ; i != buffer.Length ; ++i ) 
-                for ( int j = 0, k = i ; buffer[ k ] == pattern[ j ] && k < buffer.Length ; ++j, ++k ) 
-                    if ( j == pattern.Length - 1 ) 
+        public static int m_CalcOffset( byte[ ] m_Buffer , byte[ ] m_Pattern ) {
+            for ( int i = 0 ; i != m_Buffer.Length ; ++i ) 
+                for ( int j = 0, k = i ; m_Buffer[ k ] == m_Pattern[ j ] && k < m_Buffer.Length ; ++j, ++k ) 
+                    if ( j == m_Pattern.Length - 1 ) 
                         return i;
             return -1;
         }
         
-        public static int _calc_offset_send_result( byte[ ] buffer , byte[ ] pattern , long results_size ,  out byte[ ] results ) {
-            results = new byte[ results_size ];
-            for ( int i = 0, j = 0 ; i != buffer.Length && j != 30 ; ++i ) {
-                for ( int k = 0, l = 0, n = i ; j < buffer.Length && k < results_size; ++k, ++n ) {
-                    if ( l < pattern.Length ) 
-                        if ( buffer[ j ] != pattern[ l ] )
+        public static int m_CalcOffsetSendResult( byte[ ] m_Buffer , byte[ ] m_Pattern , long m_ResultsSize ,  out byte[ ] m_Results ) {
+            m_Results = new byte[ m_ResultsSize ];
+            for ( int i = 0, j = 0 ; i != m_Buffer.Length && j != 30 ; ++i ) {
+                for ( int k = 0, l = 0, n = i ; j < m_Buffer.Length && k < m_ResultsSize; ++k, ++n ) {
+                    if ( l < m_Pattern.Length ) 
+                        if ( m_Buffer[ j ] != m_Pattern[ l ] )
                             break;
-                    j = buffer[ n ] == 0x00 ? ++j : 0;
-                    results[ k ] = buffer[ n ];
-                    l = l >= pattern.Length ? ++l : l;
+                    j = m_Buffer[ n ] == 0x00 ? ++j : 0;
+                    m_Results[ k ] = m_Buffer[ n ];
+                    l = l >= m_Pattern.Length ? ++l : l;
                 }
-                for ( int k = 0, l = i ; buffer[ l ] == pattern[ k ] && k < buffer.Length ; ++k, ++l ) 
-                    if ( k == pattern.Length - 1 ) 
+                for ( int k = 0, l = i ; m_Buffer[ l ] == m_Pattern[ k ] && k < m_Buffer.Length ; ++k, ++l ) 
+                    if ( k == m_Pattern.Length - 1 ) 
                         return i;
             }
             return -1;
@@ -85,9 +85,9 @@ namespace DretNetAobScan {
             }
             return ( byte[ ] ) type; // it will give error if the type is not byte[].
         }
-        public IntPtr GetProcessHandle( ) => OpenProcess( PROCESS_ALL_ACCESS , false , ( uint ) _process_id );
+        public IntPtr m_GetProcessHandle( ) => OpenProcess( PROCESS_ALL_ACCESS , false , ( uint ) m_ProcessID );
         public static int GetProcessID( string ProcessName ) => Process.GetProcessesByName( ProcessName ).FirstOrDefault( ).Id;
-        public List<IntPtr> GetAddresses( ) => _addresses;
+        public List<IntPtr> GetAddresses( ) => m_Addresses;
         #endregion
     }
 }

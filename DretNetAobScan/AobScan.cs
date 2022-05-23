@@ -6,49 +6,49 @@ using System.Text;
 namespace DretNetAobScan {
     public class AobScan : Helper {
         public AobScan( int pid ) {
-            _process_id = pid;
+            m_ProcessID = pid;
         }
 
-        public byte[ ] SendResults( object pattern , long results_size = 0xF0 ,  long start_address = 0x0 , long end_address = 0xFFFFFFFF ) { //TODO: Fix the offset calculation.
-            byte[ ] _pattern = GetBytes( pattern );
-            for ( long i = start_address ; i < end_address ; ) {
-                MEMORY_BASIC_INFORMATION mem_info = new MEMORY_BASIC_INFORMATION();
-                if ( VirtualQueryEx( GetProcessHandle( ) , new IntPtr( i ) , out mem_info , ( uint ) Marshal.SizeOf( typeof( MEMORY_BASIC_INFORMATION ) ) ) == 0 ) break;
-                if ( ( mem_info.State & ( uint ) MEM_COMMIT ) != 0 && ( mem_info.Protect & ( uint ) PAGE_GUARD ) != PAGE_GUARD ) {
-                    byte[ ] _read_buffer = new byte[ mem_info.RegionSize ];
-                    uint _buffer_value = 0;
-                    if ( ReadProcessMemory( GetProcessHandle( ) , new IntPtr( mem_info.BaseAddress ) , _read_buffer , ( uint ) _read_buffer.Length , out _buffer_value ) ) {
-                        int offset = _calc_offset_send_result( _read_buffer , _pattern , results_size , out results );
-                        if ( offset != -1 ) return results;
+        public byte[ ] SendResults( object Pattern , long ResultsSize = 0xF0 ,  long StartAddress = 0x0 , long EndAddress = 0xFFFFFFFF ) { //TODO: Fix the offset calculation.
+            byte[ ] m_Pattern = GetBytes( Pattern );
+            for ( long i = StartAddress ; i < EndAddress ; ) {
+                MEMORY_BASIC_INFORMATION m_MemInfo = new MEMORY_BASIC_INFORMATION();
+                if ( VirtualQueryEx( m_GetProcessHandle( ) , new IntPtr( i ) , out m_MemInfo , ( uint ) Marshal.SizeOf( typeof( MEMORY_BASIC_INFORMATION ) ) ) == 0 ) break;
+                if ( ( m_MemInfo.State & ( uint ) MEM_COMMIT ) != 0 && ( m_MemInfo.Protect & ( uint ) PAGE_GUARD ) != PAGE_GUARD ) {
+                    byte[ ] m_ReadBuffer = new byte[ m_MemInfo.RegionSize ];
+                    uint m_BufferValue = 0;
+                    if ( ReadProcessMemory( m_GetProcessHandle( ) , new IntPtr( m_MemInfo.BaseAddress ) , m_ReadBuffer , ( uint ) m_ReadBuffer.Length , out m_BufferValue ) ) {
+                        int m_Offset = m_CalcOffsetSendResult( m_ReadBuffer , m_Pattern , ResultsSize , out m_Results );
+                        if ( m_Offset != -1 ) return m_Results;
                     }
                 }
-                i = mem_info.BaseAddress + mem_info.RegionSize;
+                i = m_MemInfo.BaseAddress + m_MemInfo.RegionSize;
             }
-            return results = GetBytes( "No results found." );
+            return m_Results = GetBytes( "No results found." );
         }
 
-        public void ReadMemory( object pattern , long start_address = 0x0 , long end_address = 0xFFFFFFFF ) {
-            byte[ ] _pattern = GetBytes( pattern );
-            for ( long i = start_address ; i < end_address ; ) {
-                MEMORY_BASIC_INFORMATION mem_info = new MEMORY_BASIC_INFORMATION();
-                if ( VirtualQueryEx( GetProcessHandle( ) , new IntPtr( i ) , out mem_info , ( uint ) Marshal.SizeOf( typeof( MEMORY_BASIC_INFORMATION ) ) ) == 0 ) break;
-                if ( ( mem_info.State & ( uint ) MEM_COMMIT ) != 0 && ( mem_info.Protect & ( uint ) PAGE_GUARD ) != PAGE_GUARD ) {
-                    byte[ ] _read_buffer = new byte[ mem_info.RegionSize ];
-                    uint _buffer_value = 0;
-                    if ( ReadProcessMemory( GetProcessHandle( ) , new IntPtr( mem_info.BaseAddress ) , _read_buffer , ( uint ) _read_buffer.Length , out _buffer_value ) ) {
-                        int offset = _calc_offset( _read_buffer , _pattern );
-                        if ( offset != -1 ) _addresses.Add( new IntPtr( mem_info.BaseAddress + offset ) );
+        public void ReadMemory( object Pattern , long StartAddress = 0x0 , long EndAddress = 0xFFFFFFFF ) {
+            byte[ ] m_Pattern = GetBytes( Pattern );
+            for ( long i = StartAddress ; i < EndAddress ; ) {
+                MEMORY_BASIC_INFORMATION m_MemInfo = new MEMORY_BASIC_INFORMATION();
+                if ( VirtualQueryEx( m_GetProcessHandle( ) , new IntPtr( i ) , out m_MemInfo , ( uint ) Marshal.SizeOf( typeof( MEMORY_BASIC_INFORMATION ) ) ) == 0 ) break;
+                if ( ( m_MemInfo.State & ( uint ) MEM_COMMIT ) != 0 && ( m_MemInfo.Protect & ( uint ) PAGE_GUARD ) != PAGE_GUARD ) {
+                    byte[ ] m_ReadBuffer = new byte[ m_MemInfo.RegionSize ];
+                    uint m_BufferValue = 0;
+                    if ( ReadProcessMemory( m_GetProcessHandle( ) , new IntPtr( m_MemInfo.BaseAddress ) , m_ReadBuffer , ( uint ) m_ReadBuffer.Length , out m_BufferValue ) ) {
+                        int m_Offset = m_CalcOffset( m_ReadBuffer , m_Pattern );
+                        if ( m_Offset != -1 ) m_Addresses.Add( new IntPtr( m_MemInfo.BaseAddress + m_Offset ) );
                     }
                 }
-                i = mem_info.BaseAddress + mem_info.RegionSize;
+                i = m_MemInfo.BaseAddress + m_MemInfo.RegionSize;
             }
         }
 
-        public void WriteMemory( object buffer , uint buffer_length = 0 ) {
-            byte[ ] _buffer = GetBytes( buffer );
-            for ( int i = 0 ; i < _addresses.Count( ) ; ++i ) {
-                uint _buffer_value = 0;
-                WriteProcessMemory( GetProcessHandle( ) , _addresses[ i ] , _buffer , buffer_length == 0 ? ( uint ) _buffer.Length : buffer_length , _buffer_value );
+        public void WriteMemory( object Buffer , uint BufferLength = 0 ) {
+            byte[ ] m_Buffer = GetBytes( Buffer );
+            for ( int i = 0 ; i < m_Addresses.Count( ) ; ++i ) {
+                uint m_BufferValue = 0;
+                WriteProcessMemory( m_GetProcessHandle( ) , m_Addresses[ i ] , m_Buffer , BufferLength == 0 ? ( uint ) m_Buffer.Length : BufferLength , m_BufferValue );
             }
         }
     }
