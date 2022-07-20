@@ -47,8 +47,7 @@ namespace DretNetAobScan {
         public static int m_CalcOffset( byte[ ] m_Buffer , byte[ ] m_Pattern ) {
             for ( int i = 0 ; i != m_Buffer.Length ; ++i ) 
                 for ( int j = 0, k = i ; m_Buffer[ k ] == m_Pattern[ j ] && k < m_Buffer.Length ; ++j, ++k ) 
-                    if ( j == m_Pattern.Length - 1 ) 
-                        return i;
+                    if ( j == m_Pattern.Length - 1 ) return i;
             return -1;
         }
         
@@ -57,15 +56,13 @@ namespace DretNetAobScan {
             for ( int i = 0, j = 0 ; i != m_Buffer.Length && j != 30 ; ++i ) {
                 for ( int k = 0, l = 0, n = i ; j < m_Buffer.Length && k < m_ResultsSize; ++k, ++n ) {
                     if ( l < m_Pattern.Length ) 
-                        if ( m_Buffer[ j ] != m_Pattern[ l ] )
-                            break;
+                        if ( m_Buffer[ j ] != m_Pattern[ l ] ) break;
                     j = m_Buffer[ n ] == 0x00 ? ++j : 0;
                     m_Results[ k ] = m_Buffer[ n ];
                     l = l >= m_Pattern.Length ? ++l : l;
                 }
                 for ( int k = 0, l = i ; m_Buffer[ l ] == m_Pattern[ k ] && k < m_Buffer.Length ; ++k, ++l ) 
-                    if ( k == m_Pattern.Length - 1 ) 
-                        return i;
+                    if ( k == m_Pattern.Length - 1 ) return i;
             }
             return -1;
         }
